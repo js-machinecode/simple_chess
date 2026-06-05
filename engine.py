@@ -1,7 +1,7 @@
 '''Chess engine logic for a terminal two player chess game.'''
 
-COLS = 'abcdefgh'
-ROWS = '12345678'
+FILES = 'abcdefgh'
+RANKS = '12345678'
 
 class ChessGame:
     def __init__(self):
@@ -25,7 +25,7 @@ class ChessGame:
         for i, row in enumerate(self.board):
             rank = 8 - i
             print(rank, ' '.join(row))
-        print('  ' + ' '.join(COLS))
+        print('  ' + ' '.join(FILES))
         print()
 
     def square_to_index(self, square):
@@ -35,7 +35,7 @@ class ChessGame:
         file = square[0]
         rank = square[1]
 
-        if file not in COLS or rank not in ROWS:
+        if file not in FILES or rank not in RANKS:
             raise ValueError("Invalid square.")
         
         col = FILES.index(file)
