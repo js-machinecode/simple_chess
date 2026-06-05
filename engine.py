@@ -27,3 +27,21 @@ class ChessGame:
             print(rank, ' '.join(row))
         print('  ' + ' '.join(COLS))
         print()
+
+    def square_to_index(self, square):
+        if len(square) != 2:
+            raise ValueError("Square must be like e2 or a7.")
+        
+        file = square[0]
+        rank = square[1]
+
+        if file not in COLS or rank not in ROWS:
+            raise ValueError("Invalid square.")
+        
+        col = FILES.index(file)
+        row = 8 - int(rank)
+
+        return row, col
+
+    def move_piece(self, start, end):
+        start_row, start_Col = self.square_to_index(start)
