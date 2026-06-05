@@ -50,7 +50,45 @@ class ChessGame:
         if piece == '.':
             return None
         return "white" if self.is_white_piece(piece) else "black"
+    
+    def is_valid_pawn_move(self, piece, start_row, start_col, end_row, end_col):
+        direction = -1 if piece.isupper() else 1
+        starting_row = 6 if piece.isupper() else 1
 
+        row_diff = end_row - start_row
+        col_diff = end_col - start_col
+
+        target = self.board[end_row][end_col]
+
+        # Move forward one square
+        if col_diff == 0 and row_diff == direction and target == '.':
+            return True
+        
+        # Move forward two squares from starting position
+        if (
+            col_diff == 0
+            and start_row == starting_row
+            and row_diff == 2 * direction
+            and target == '.'
+            and self.board[start_row + direction][start_col] == '.'
+        ):
+            return True
+        
+        # Capture Diagonally
+        if abs(col_diff) == 1 and row_diff == direction and target != '.':
+            return self.piece_color(target) != self.piece_color(piece)
+        
+        return False
+
+    def is_valid_move(self, piece, start_row, start_col, end_row, end_col):
+        piece_type = piece.lower()
+
+        row_diff = end_row - start_row
+        col_diff = end_col - start_col
+
+        if piece_type == 'p':
+            return self.is_valid_pawn_move(piece, start_row, start_col, end_row, end_col)
+    
     def move_piece(self, start, end):
         start_row, start_col = self.square_to_index(start)
         end_row, end_col = self.square_to_index(end)
@@ -63,3 +101,10 @@ class ChessGame:
         
         if self.piece_color(piece) != self.turn:
             return False, f"It is {self.turn}'s turn."
+        
+        if target != '.' and self.piece_color(target) == self.turn:
+            return False, "You cannot capture your own piece."
+        
+        if not self.is_valid_move(piece, start_row, start_col, end_row, end_col):
+            return False, "Invalid move for that piece"
+        
