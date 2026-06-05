@@ -42,6 +42,24 @@ class ChessGame:
         row = 8 - int(rank)
 
         return row, col
+    
+    def is_white_piece(self, piece):
+        return piece.isupper()
+    
+    def piece_color(self, piece):
+        if piece == '.':
+            return None
+        return "white" if self.is_white_piece(piece) else "black"
 
     def move_piece(self, start, end):
-        start_row, start_Col = self.square_to_index(start)
+        start_row, start_col = self.square_to_index(start)
+        end_row, end_col = self.square_to_index(end)
+
+        piece = self.board[start_row][start_col]
+        target = self.board[end_row][end_col]
+
+        if piece == '.':
+            return False, 'No piece at starting square.'
+        
+        if self.piece_color(piece) != self.turn:
+            return False, f"It is {self.turn}'s turn."
