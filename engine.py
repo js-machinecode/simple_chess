@@ -1,5 +1,7 @@
 '''Chess engine logic for a terminal two player chess game.'''
 
+COLS = 'abcdefgh'
+ROWS = '12345678'
 
 class ChessGame:
     def __init__(self):
@@ -17,3 +19,11 @@ class ChessGame:
             ['P' for _ in range(8)],
             ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R']
         ]
+    
+    def display_board(self):
+        print()
+        for i, row in enumerate(self.board):
+            rank = 8 - i
+            print(rank, ' '.join(row))
+        print('  ' + ' '.join(COLS))
+        print()
