@@ -14,3 +14,10 @@ class TestChessGame(unittest.TestCase):
         success, message = self.game.move_piece('e2', 'e3')
         self.assertTrue(success)
         self.assertEqual(self.game.board[5][4], 'P')
+
+    def test_white_pawn_move_forward_two_from_start(self):
+        success, message = self.game.move_piece("e3", "e4")
+        self.assertFalse(success)
+        self.assertEqual(message, "No piece at starting square.")
+
+    
