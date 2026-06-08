@@ -30,4 +30,9 @@ class TestChessGame(unittest.TestCase):
         self.assertFalse(success)
         self.assertEqual(message, "It is white's turn.")
 
+    def test_knight_can_jump(self):
+        success, message = self.game.move_piece("g1", "f3")
+        self.assertTrue(success)
+        self.assertEqual(self.game.board[5][5], 'N')
+
     
