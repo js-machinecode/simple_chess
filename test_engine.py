@@ -10,6 +10,19 @@ class TestChessGame(unittest.TestCase):
     def test_initial_turn_is_white(self):
         self.assertEqual(self.game.turn, "white")
 
+    def test_board_has_8_rows(self):
+        self.assertEqual(len(self.game.board), 8)
+
+    def test_each_board_row_has_8_columns(self):
+        for row in self.game.board:
+            self.assertEqual(len(row), 8)
+
+    def test_white_king_starts_on_e1(self):
+        self.assertEqual(self.game.board[7][4], 'K')
+
+    def test_black_king_starts_on_e8(self):
+        self.assertEqual(self.game.board[0][4], 'k')
+
     def test_white_pawn_move_forward_one(self):
         success, message = self.game.move_piece('e2', 'e3')
         self.assertTrue(success)
