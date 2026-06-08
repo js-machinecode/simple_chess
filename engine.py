@@ -262,16 +262,21 @@ class ChessGame:
         piece = self.board[start_row][start_col]
         target = self.board[end_row][end_col]
 
-        if piece == '.':
-            return False, 'No piece at starting square.'
-        
+        if piece == ".":
+            return False, "No piece at starting square."
+
         if self.piece_color(piece) != self.turn:
             return False, f"It is {self.turn}'s turn."
-        
-        if target != '.' and self.piece_color(target) == self.turn:
+
+        if target != "." and self.piece_color(target) == self.turn:
             return False, "You cannot capture your own piece."
-        
+
         if not self.is_valid_move(piece, start_row, start_col, end_row, end_col):
             return False, "Invalid move for that piece."
-        
-        return True, 'Move successful.'
+
+        self.board[end_row][end_col] = piece
+        self.board[start_row][start_col] = "."
+
+        self.turn = "black" if self.turn == "white" else "white"
+
+        return True, "Move successful."
