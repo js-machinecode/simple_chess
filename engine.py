@@ -5,10 +5,22 @@ RANKS = '12345678'
 
 class ChessGame:
     def __init__(self):
+        # create a new chess board with the starting positions for both players
         self.board = self.create_board()
+        # turn is white since white always starts first
         self.turn = "white"
 
     def create_board(self):
+        '''
+        Create and return the initial chess board.
+
+        uppercase letters = white
+        lowercase letters = black
+
+        '.' represents an empty square
+
+        '''
+        
         return [
             ["r", "n", "b", "q", "k", "b", "n", "r"],
             ['p' for _ in range(8)],
@@ -21,6 +33,9 @@ class ChessGame:
         ]
     
     def display_board(self):
+        '''
+        Print the board to the terminal.
+        '''
         print()
         for i, row in enumerate(self.board):
             rank = 8 - i
@@ -29,6 +44,17 @@ class ChessGame:
         print()
 
     def square_to_index(self, square):
+        '''
+        Convert chess notation into list indexes
+
+        e.g.  e2 -> (6, 4)
+              a8 -> (0, 0)
+
+        the board is a list of lists
+        player input has to be translated into row, col
+        before the board can be accessed
+        '''
+
         if len(square) != 2:
             raise ValueError("Square must be like e2 or a7.")
         
@@ -47,11 +73,32 @@ class ChessGame:
         return piece.isupper()
     
     def piece_color(self, piece):
+        '''
+        Determine which players owns a piece
+
+        Returns:
+                'white' for uppercase pieces
+                'black' for lowercase pieces
+                None for empty squares
+        '''
+        
         if piece == '.':
             return None
         return "white" if self.is_white_piece(piece) else "black"
     
     def is_valid_pawn_move(self, piece, start_row, start_col, end_row, end_col):
+        '''
+        Validate pawn movement.
+
+        Pawns can:
+            1. Move forward
+            2. Capture diagonally
+            3. Move two squares on first move
+
+        white moves up
+        black moves down
+        '''
+       
         direction = -1 if piece.isupper() else 1
         starting_row = 6 if piece.isupper() else 1
 
@@ -81,6 +128,16 @@ class ChessGame:
         return False
 
     def is_clear_straight_path(self, start_row, start_col, end_row, end_col):
+        '''
+        Check whether every square between the start and destination is empty.
+
+        Used by:
+            1. Rook
+            2. Queen
+
+        Pieces are not allowed to move through other pieces.
+        '''
+        
         if start_row != end_row and start_col != end_col:
             return False
         
@@ -109,6 +166,16 @@ class ChessGame:
         return True
 
     def is_clear_diagonal_path(self, start_row, start_col, end_row, end_col):
+        '''
+        Verify that a diagonal path contains no blocking pieces.
+
+        used by:
+            1. bishop
+            2. queen
+
+        every square between start and destination must be empty
+        '''
+        
         row_diff = end_row - start_row
         col_diff = end_col - start_col
 
@@ -130,6 +197,14 @@ class ChessGame:
         return True
 
     def is_valid_move(self, piece, start_row, start_col, end_row, end_col):
+        '''
+        Determine whether a piece can legally move
+        from its current square to its destination
+
+        This function acts as a dispatcher. It examines
+        the piece type and sends the move to the appropriate movement rule.
+        '''
+        
         piece_type = piece.lower()
 
         row_diff = end_row - start_row
@@ -164,6 +239,23 @@ class ChessGame:
         return False
     
     def move_piece(self, start, end):
+        '''
+        Attempt moving a piece from one square to another
+
+        Responsible for:
+            1. Converting user input into board indexes
+            2. Verifying if a piece exists
+            3. Verifying the correct player is moving
+            4. Preventing capturing your own piece
+            5. Verifying the move follows piece rules
+            6. Update the board
+            7. Switch turns
+
+        Returns:
+            (True, message) if successful
+            (False, error_message) otherwise
+        '''
+        
         start_row, start_col = self.square_to_index(start)
         end_row, end_col = self.square_to_index(end)
 
