@@ -80,14 +80,88 @@ class ChessGame:
         
         return False
 
+    def is_clear_straight_path(self, start_row, start_col, end_row, end_col):
+        if start_row != end_row and start_col != end_col:
+            return False
+        
+        row_step = 0
+        col_step = 0
+
+        if end_row > start_row:
+            row_step = 1
+        elif end_row < start_row:
+            row_step = -1
+
+        if end_col > start_col:
+            col_step = 1
+        elif end_col < start_col:
+            col_step = -1
+
+        row = start_row + row_step
+        col = start_col + col_step
+
+        while row != end_row or col != end_col:
+            if self.board[row][col] != '.':
+                return False
+            row += row_step
+            col += col_step
+        
+        return True
+
+    def is_clear_diagonal_path(self, start_row, start_col, end_row, end_col):
+        row_diff = end_row - start_row
+        col_diff = end_col - start_col
+
+        if abs(row_diff) != abs(col_diff):
+            return False
+
+        row_step = 1 if row_diff > 0 else -1
+        col_step = 1 if col_diff > 0 else -1
+
+        row = start_row + row_step
+        col = start_col + col_step
+
+        while row != end_row or col != end_col:
+            if self.board[row][col] != ".":
+                return False
+            row += row_step
+            col += col_step
+
+        return True
+
     def is_valid_move(self, piece, start_row, start_col, end_row, end_col):
         piece_type = piece.lower()
 
         row_diff = end_row - start_row
         col_diff = end_col - start_col
 
+        # pawn movement
         if piece_type == 'p':
             return self.is_valid_pawn_move(piece, start_row, start_col, end_row, end_col)
+        
+        # rook movement
+        if piece_type == 'r':
+            return self.is_clear_straight_path(start_row, start_col, end_row, end_col)
+
+        # knight movement
+        if piece_type == 'n':
+            return (abs(row_diff), abs(col_diff)) in [(2,1), (1,2)]
+        
+        # bishop movement
+        if piece_type == 'b':
+            return self.is_clear_diagonal_path(start_row, start_col, end_row, end_col)
+        
+        # queen movement
+        if piece_type == 'q':
+            return (
+                self.is_clear_straight_path(start_row, start_col, end_row, end_col)
+                or self.is_clear_diagonal_path(start_row, start_col, end_row, end_col)
+            )
+        
+        if piece_type == 'k':
+            return abs(row_diff) <= 1 and abs(col_diff) <= 1
+        
+        return False
     
     def move_piece(self, start, end):
         start_row, start_col = self.square_to_index(start)
@@ -106,5 +180,5 @@ class ChessGame:
             return False, "You cannot capture your own piece."
         
         if not self.is_valid_move(piece, start_row, start_col, end_row, end_col):
-            return False, "Invalid move for that piece"
+            return False, "Invalid move for that piece."
         
