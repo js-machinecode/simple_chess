@@ -20,4 +20,9 @@ class TestChessGame(unittest.TestCase):
         self.assertFalse(success)
         self.assertEqual(message, "No piece at starting square.")
 
+    def test_cannot_move_from_empty_square(self):
+        success, message = self.game.move_piece("e3", "e4")
+        self.assertFalse(success)
+        self.assertEqual(message, "No piece at starting square.")
+    
     
