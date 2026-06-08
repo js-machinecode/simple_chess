@@ -35,4 +35,10 @@ class TestChessGame(unittest.TestCase):
         self.assertTrue(success)
         self.assertEqual(self.game.board[5][5], 'N')
 
-    
+    def test_rook_cannot_jump_over_piece(self):
+        success, message = self.game.move_piece("a1", "a3")
+        self.assertFalse(success)
+        self.assertEqual(message, "Invalid move for that piece.")
+
+if __name__ == "__main__":
+    unittest.main()
