@@ -274,3 +274,4 @@ class ChessGame:
         if not self.is_valid_move(piece, start_row, start_col, end_row, end_col):
             return False, "Invalid move for that piece."
         
+        return True, 'Move successful.'
