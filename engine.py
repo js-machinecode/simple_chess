@@ -99,6 +99,67 @@ class ChessGame:
             return None
         return "white" if self.is_white_piece(piece) else "black"
     
+    def is_in_check(self, color):
+        """
+        Determine whether the specified player's king is currently under attack.
+
+        A king is considered to be in check if any opposing piece can legally
+        move to the king's square on its next turn.
+
+        Parameters:
+            color (str):
+                The player whose king should be examined.
+                Must be either "white" or "black".
+
+        Returns:
+            bool:
+                True if the king is currently threatened by an opposing piece.
+                False otherwise.
+
+        Examples:
+            is_in_check("white") -> True
+            is_in_check("white") -> False
+            is_in_check("black") -> True
+
+        Design Strategy:
+            1. Locate the specified king on the board.
+            2. Determine the opposing player's color.
+            3. Examine every enemy piece on the board.
+            4. For each enemy piece, determine whether it has a legal move
+            to the king's square.
+            5. If any enemy piece can attack the king, return True.
+            6. Otherwise return False.
+
+        Note:
+            This helper only detects whether a king is currently in check.
+            It does not determine checkmate. Checkmate requires verifying
+            that the checked player has no legal moves available to escape
+            the threat.
+        """
+        king = "K" if color == "white" else "k"
+
+        king_row = None
+        king_col = None
+
+        for row in range(8):
+            for col in range(8):
+                if self.board[row][col] == king:
+                    king_row = row
+                    king_col = col
+
+        enemy_color = self.opposite_color(color)
+
+        for row in range(8):
+            for col in range(8):
+                piece = self.board[row][col]
+
+                if piece != "." and self.piece_color(piece) == enemy_color:
+                    if self.is_valid_move(piece, row, col, king_row, king_col):
+                        return True
+
+        return False
+    
+    
     def is_valid_pawn_move(self, piece, start_row, start_col, end_row, end_col):
         '''
         Validate pawn movement.
