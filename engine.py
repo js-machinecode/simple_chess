@@ -10,6 +10,19 @@ class ChessGame:
         # turn is white since white always starts first
         self.turn = "white"
 
+        self.winner = None
+        self.game_over = False
+
+        self.white_king_moved = False
+        self.black_king_moved = False
+        self.white_left_rook_moved = False
+        self.white_right_rook_moved = False
+        self.black_left_rook_moved = False
+        self.black_right_rook_moved = False
+
+    def opposite_color(self, color):
+        return "black" if color == "white" else "white"
+
     def create_board(self):
         '''
         Create and return the initial chess board.
