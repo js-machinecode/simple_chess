@@ -370,6 +370,19 @@ class ChessGame:
         return (self.is_in_check(color) and 
                 not self.has_legal_moves(color))
     
+    def update_game_over_and_winner(self):
+        if self.is_checkmate("white"):
+            self.game_over = True
+            self.winner = "black"
+
+        elif self.is_checkmate("black"):
+            self.game_over = True
+            self.winner = "white"
+
+        else:
+            self.game_over = False
+            self.winner = None
+
     def move_piece(self, start, end):
         '''
         Attempt moving a piece from one square to another
