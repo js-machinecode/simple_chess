@@ -503,5 +503,20 @@ class TestChessGame(unittest.TestCase):
     def test_black_not_in_checkmate_at_start(self):
         self.assertFalse(self.game.is_checkmate("black"))
 
+    def test_check_not_checkmate(self):
+        self.game.board = [
+            [".", ".", ".", ".", ".", ".", ".", "k"],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "r", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "K", ".", ".", "."],
+        ]
+
+        self.assertTrue(self.game.is_in_check("white"))
+        self.assertFalse(self.game.is_checkmate("white"))
+
 if __name__ == "__main__":
     unittest.main()
