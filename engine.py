@@ -312,6 +312,64 @@ class ChessGame:
         
         return False
     
+    def has_legal_moves(self, color):
+        '''
+        Check if the specified player has any legal moves available.
+
+        This is used to determine checkmate. A player is in checkmate if
+        their king is in check and they have no legal moves to escape the
+        threat.
+
+        Returns:
+            True if the player has at least one legal move available.
+            False if the player has no legal moves.
+        '''
+        
+        for start_row in range(8):
+            for start_col in range(8):
+                piece = self.board[start_row][start_col]
+
+                if piece != "." and self.piece_color(piece) == color:
+                    for end_row in range(8):
+                        for end_col in range(8):
+                            target = self.board[end_row][end_col]
+
+                            if (target == "." or self.piece_color(target) != color) and self.is_valid_move(piece, start_row, start_col, end_row, end_col):
+                                # Make the move temporarily
+                                original_piece = self.board[end_row][end_col]
+                                self.board[end_row][end_col] = piece
+                                self.board[start_row][start_col] = "."
+
+                                # Check if the move leaves the king in check
+                                in_check = self.is_in_check(color)
+
+                                # Undo the move
+                                self.board[start_row][start_col] = piece
+                                self.board[end_row][end_col] = original_piece
+
+                                if not in_check:
+                                    return True
+        
+        return False
+    
+    def is_checkmate(self, color):
+        """
+        Determine whether the specified player is in checkmate.
+
+        A player is in checkmate if:
+            1. Their king is currently in check.
+            2. They have no legal moves that remove the check.
+
+        Parameters:
+            color (str):
+                "white" or "black"
+
+        Returns:
+            bool
+        """
+        return (self.is_in_check(color) and 
+                not self.has_legal_moves(color))
+    
     def move_piece(self, start, end):
         '''
         Attempt moving a piece from one square to another
