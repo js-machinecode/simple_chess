@@ -446,17 +446,17 @@ class TestChessGame(unittest.TestCase):
             [".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", "B", ".", ".", "."],
+            [".", ".", ".", "R", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", "K", ".", ".", "."],
         ]
 
-        success, message = self.game.move_piece("e4", "e6")
+        success, message = self.game.move_piece("d4", "e4")
 
         self.assertTrue(success)
-        self.assertEqual(self.game.board[2][4], "B")
-        self.assertEqual(self.game.board[4][4], ".")
+        self.assertEqual(self.game.board[4][4], "R")
+        self.assertEqual(self.game.board[4][3], ".")
 
 
     def test_player_can_capture_piece_giving_check(self):
@@ -465,7 +465,7 @@ class TestChessGame(unittest.TestCase):
             [".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", "r", ".", ".", "."],
-            [".", ".", ".", ".", "B", ".", ".", "."],
+            [".", ".", ".", ".", "R", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", "K", ".", ".", "."],
@@ -474,7 +474,7 @@ class TestChessGame(unittest.TestCase):
         success, message = self.game.move_piece("e4", "e5")
 
         self.assertTrue(success)
-        self.assertEqual(self.game.board[3][4], "B")
+        self.assertEqual(self.game.board[3][4], "R")
         self.assertEqual(self.game.board[4][4], ".")
 
 

@@ -351,6 +351,13 @@ class ChessGame:
         self.board[end_row][end_col] = piece
         self.board[start_row][start_col] = "."
 
+        # If this move leaves the current player's king in check,
+        # undo the move and reject it.
+        if self.is_in_check(self.turn):
+            self.board[start_row][start_col] = piece
+            self.board[end_row][end_col] = target
+            return False, "You cannot leave your king in check."
+
         self.turn = "black" if self.turn == "white" else "white"
 
         return True, "Move successful."
