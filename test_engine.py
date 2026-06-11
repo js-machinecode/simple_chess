@@ -497,5 +497,11 @@ class TestChessGame(unittest.TestCase):
         self.assertEqual(self.game.board[7][3], "K")
         self.assertEqual(self.game.board[7][4], ".")
 
+    def test_white_not_in_checkmate_at_start(self):
+        self.assertFalse(self.game.is_checkmate("white"))
+
+    def test_black_not_in_checkmate_at_start(self):
+        self.assertFalse(self.game.is_checkmate("black"))
+
 if __name__ == "__main__":
     unittest.main()
