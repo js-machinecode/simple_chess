@@ -416,5 +416,86 @@ class TestChessGame(unittest.TestCase):
 
         self.assertTrue(self.game.is_in_check("black"))
 
+    # -------------------------
+    # Illegal moves due to check exposure or fails to resolve check
+    # -------------------------
+
+    def test_player_cannot_move_piece_that_exposes_own_king_to_check(self):
+        self.game.board = [
+            [".", ".", ".", ".", "r", ".", ".", "k"],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "B", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "K", ".", ".", "."],
+        ]
+
+        success, message = self.game.move_piece("e4", "f5")
+
+        self.assertFalse(success)
+        self.assertEqual(message, "You cannot leave your king in check.")
+        self.assertEqual(self.game.board[4][4], "B")
+        self.assertEqual(self.game.board[3][5], ".")
+
+
+    def test_player_can_move_piece_to_block_check(self):
+        self.game.board = [
+            [".", ".", ".", ".", "r", ".", ".", "k"],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "B", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "K", ".", ".", "."],
+        ]
+
+        success, message = self.game.move_piece("e4", "e6")
+
+        self.assertTrue(success)
+        self.assertEqual(self.game.board[2][4], "B")
+        self.assertEqual(self.game.board[4][4], ".")
+
+
+    def test_player_can_capture_piece_giving_check(self):
+        self.game.board = [
+            [".", ".", ".", ".", ".", ".", ".", "k"],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "r", ".", ".", "."],
+            [".", ".", ".", ".", "B", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "K", ".", ".", "."],
+        ]
+
+        success, message = self.game.move_piece("e4", "e5")
+
+        self.assertTrue(success)
+        self.assertEqual(self.game.board[3][4], "B")
+        self.assertEqual(self.game.board[4][4], ".")
+
+
+    def test_king_cannot_move_into_check(self):
+        self.game.board = [
+            [".", ".", ".", ".", ".", ".", ".", "k"],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "r", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", "K", ".", ".", ".", "."],
+        ]
+
+        success, message = self.game.move_piece("d1", "e1")
+
+        self.assertFalse(success)
+        self.assertEqual(message, "You cannot leave your king in check.")
+        self.assertEqual(self.game.board[7][3], "K")
+        self.assertEqual(self.game.board[7][4], ".")
+
 if __name__ == "__main__":
     unittest.main()
