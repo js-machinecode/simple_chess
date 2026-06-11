@@ -522,20 +522,20 @@ class TestChessGame(unittest.TestCase):
         self.assertTrue(self.game.is_in_check("white"))
         self.assertFalse(self.game.is_checkmate("white"))
 
-        def test_checkmate_requires_check(self):
-            self.game.board = [
-                ["k", ".", ".", ".", ".", ".", ".", "."],
-                [".", "Q", ".", ".", ".", ".", ".", "."],
-                [".", ".", ".", ".", ".", ".", ".", "."],
-                [".", ".", ".", ".", ".", ".", ".", "."],
-                [".", ".", ".", ".", ".", ".", ".", "."],
-                [".", ".", ".", ".", ".", ".", ".", "."],
-                [".", ".", ".", ".", ".", ".", ".", "."],
-                [".", ".", ".", ".", "K", ".", ".", "."],
-            ]
+    def test_checkmate_requires_check(self):
+        self.game.board = [
+            ["k", ".", ".", ".", ".", ".", ".", "."],
+            [".", "Q", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "K", ".", ".", "."],
+        ]
 
-            self.assertFalse(self.game.is_in_check("black"))
-            self.assertFalse(self.game.is_checkmate("black"))
+        self.assertFalse(self.game.is_in_check("black"))
+        self.assertFalse(self.game.is_checkmate("black"))
 
 
     def test_checkmate_when_king_has_no_safe_square(self):
