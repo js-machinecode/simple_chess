@@ -313,43 +313,56 @@ class ChessGame:
         return False
     
     def has_legal_moves(self, color):
-        '''
-        Check if the specified player has any legal moves available.
+        """
+        Check whether the specified player has at least one legal move.
 
-        This is used to determine checkmate. A player is in checkmate if
-        their king is in check and they have no legal moves to escape the
-        threat.
+        A legal move must:
+            1. Belong to the specified player's piece.
+            2. Follow that piece's movement rules.
+            3. Not capture the player's own piece.
+            4. Not leave that player's king in check.
+        """
 
-        Returns:
-            True if the player has at least one legal move available.
-            False if the player has no legal moves.
-        '''
-        
         for start_row in range(8):
             for start_col in range(8):
                 piece = self.board[start_row][start_col]
 
-                if piece != "." and self.piece_color(piece) == color:
-                    for end_row in range(8):
-                        for end_col in range(8):
-                            target = self.board[end_row][end_col]
+                if piece == "." or self.piece_color(piece) != color:
+                    continue
 
-                            if (target == "." or self.piece_color(target) != color) and self.is_valid_move(piece, start_row, start_col, end_row, end_col):
-                                # Make the move temporarily
-                                original_piece = self.board[end_row][end_col]
-                                self.board[end_row][end_col] = piece
-                                self.board[start_row][start_col] = "."
+                for end_row in range(8):
+                    for end_col in range(8):
 
-                                # Check if the move leaves the king in check
-                                in_check = self.is_in_check(color)
+                        if start_row == end_row and start_col == end_col:
+                            continue
 
-                                # Undo the move
-                                self.board[start_row][start_col] = piece
-                                self.board[end_row][end_col] = original_piece
+                        target = self.board[end_row][end_col]
 
-                                if not in_check:
-                                    return True
-        
+                        if target != "." and self.piece_color(target) == color:
+                            continue
+
+                        if not self.is_valid_move(
+                            piece,
+                            start_row,
+                            start_col,
+                            end_row,
+                            end_col
+                        ):
+                            continue
+
+                        # Temporarily make the move.
+                        self.board[end_row][end_col] = piece
+                        self.board[start_row][start_col] = "."
+
+                        in_check = self.is_in_check(color)
+
+                        # Undo the move.
+                        self.board[start_row][start_col] = piece
+                        self.board[end_row][end_col] = target
+
+                        if not in_check:
+                            return True
+
         return False
     
     def is_checkmate(self, color):
