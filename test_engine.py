@@ -521,7 +521,7 @@ class TestChessGame(unittest.TestCase):
 
         self.assertTrue(self.game.is_in_check("white"))
         self.assertFalse(self.game.is_checkmate("white"))
-        
+
     def test_checkmate_requires_check(self):
         self.game.board = [
             ["k", ".", ".", ".", ".", ".", ".", "."],
@@ -600,6 +600,86 @@ class TestChessGame(unittest.TestCase):
 
         self.assertTrue(self.game.is_in_check("black"))
         self.assertFalse(self.game.is_checkmate("black"))
+
+    # =====
+    # Game over tests
+    # =====
+    def test_game_not_over_at_start(self):
+        self.assertFalse(self.game.game_over)
+
+    def test_winner_is_none_at_start(self):
+        self.assertIsNone(self.game.winner)
+
+    def test_game_over_when_black_in_checkmate(self):
+        self.game.board = [
+            ["k", ".", ".", ".", ".", ".", ".", "."],
+            [".", "Q", ".", ".", ".", ".", ".", "."],
+            [".", ".", "K", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+        ]
+
+        self.game.update_game_over_and_winner()
+
+        self.assertTrue(self.game.game_over)
+        self.assertEqual(self.game.winner, "white")
+
+
+    def test_game_over_when_white_in_checkmate(self):
+        self.game.board = [
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", "k", ".", "."],
+            [".", ".", ".", ".", ".", ".", "q", "."],
+            [".", ".", ".", ".", ".", ".", ".", "K"],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+        ]
+
+        self.game.update_game_over_and_winner()
+
+        self.assertTrue(self.game.game_over)
+        self.assertEqual(self.game.winner, "black")
+
+
+    def test_game_not_over_if_only_white_is_in_check(self):
+        self.game.board = [
+            [".", ".", ".", ".", ".", ".", ".", "k"],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "r", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "K", ".", ".", "."],
+        ]
+
+        self.game.update_game_over_and_winner()
+
+        self.assertFalse(self.game.game_over)
+        self.assertIsNone(self.game.winner)
+
+
+    def test_game_not_over_if_black_king_can_escape_check(self):
+        self.game.board = [
+            ["k", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", "Q", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "K", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+        ]
+
+        self.game.update_game_over_and_winner()
+
+        self.assertFalse(self.game.game_over)
+        self.assertIsNone(self.game.winner)
 
 if __name__ == "__main__":
     unittest.main()
