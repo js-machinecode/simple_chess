@@ -690,6 +690,10 @@ class TestChessGame(unittest.TestCase):
     # promotion tests
     #======
 
+    #======
+    #white promotion
+    #======
+
     def test_white_pawn_can_promote_to_knight(self):
         self.game.board = [
             [".", ".", ".", ".", ".", ".", "k", "."],
@@ -706,5 +710,137 @@ class TestChessGame(unittest.TestCase):
 
         self.assertTrue(success)
         self.assertEqual(self.game.board[0][4], "N")
+
+    def test_white_pawn_can_promote_to_rook(self):
+        self.game.board = [
+            [".", ".", ".", ".", ".", ".", "k", "."],
+            [".", ".", ".", ".", "P", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "K", ".", ".", "."],
+        ]
+
+        success, message = self.game.move_piece("e7", "e8", "r")
+
+        self.assertTrue(success)
+        self.assertEqual(self.game.board[0][4], "R")
+
+    def test_white_pawn_can_promote_to_queen(self):
+        self.game.board = [
+            [".", ".", ".", ".", ".", ".", "k", "."],
+            [".", ".", ".", ".", "P", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "K", ".", ".", "."],
+        ]
+
+        success, message = self.game.move_piece("e7", "e8", "q")
+
+        self.assertTrue(success)
+        self.assertEqual(self.game.board[0][4], "Q")
+
+    def test_white_pawn_can_promote_to_bishop(self):
+        self.game.board = [
+            [".", ".", ".", ".", ".", ".", "k", "."],
+            [".", ".", ".", ".", "P", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "K", ".", ".", "."],
+        ]
+
+        success, message = self.game.move_piece("e7", "e8", "b")
+
+        self.assertTrue(success)
+        self.assertEqual(self.game.board[0][4], "B")
+
+    #======
+    #black promotion
+    #======
+
+    def test_black_pawn_can_promote_to_knight(self):
+        self.game.board = [
+            [".", ".", ".", ".", ".", ".", "k", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", "p", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "K", ".", ".", "."],
+        ]
+
+        self.game.turn = "black"
+
+        success, message = self.game.move_piece("b2", "b1", "n")
+
+        self.assertTrue(success)
+        self.assertEqual(self.game.board[7][1], "n")
+
+    def test_black_pawn_can_promote_to_rook(self):
+        self.game.board = [
+            [".", ".", ".", ".", ".", ".", "k", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", "p", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "K", ".", ".", "."],
+        ]
+
+        self.game.turn = "black"
+
+        success, message = self.game.move_piece("b2", "b1", "r")
+
+        self.assertTrue(success)
+        self.assertEqual(self.game.board[7][1], "r")
+
+    def test_black_pawn_can_promote_to_queen(self):
+        self.game.board = [
+            [".", ".", ".", ".", ".", ".", "k", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", "p", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "K", ".", ".", "."],
+        ]
+
+        self.game.turn = "black"
+
+        success, message = self.game.move_piece("b2", "b1", "q")
+
+        self.assertTrue(success)
+        self.assertEqual(self.game.board[7][1], "q")
+
+    def test_black_pawn_can_promote_to_bishop(self):
+        self.game.board = [
+            [".", ".", ".", ".", ".", ".", "k", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", "p", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "K", ".", ".", "."],
+        ]
+
+        self.game.turn = "black"
+
+        success, message = self.game.move_piece("b2", "b1", "b")
+
+        self.assertTrue(success)
+        self.assertEqual(self.game.board[7][1], "b")
+
 if __name__ == "__main__":
     unittest.main()
