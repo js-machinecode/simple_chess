@@ -34,3 +34,8 @@ def main():
             print(message)
         except ValueError as error:
             print(error)
+
+
+
+if __name__ == "__main__":
+    main()
