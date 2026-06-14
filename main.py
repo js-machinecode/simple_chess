@@ -14,6 +14,8 @@ def parse_move_input(move):
     elif input_length > 3 or input_length < 2:
         raise ValueError('Enter moves like e2 e4 or e7 e8 q')
     
+    return start, end, promotion_choice
+    
 def main():
     game = ChessGame()
 
