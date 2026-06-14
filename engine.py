@@ -392,9 +392,28 @@ class ChessGame:
             self.game_over = True
             self.winner = "white"
 
+        elif self.is_stalemate("white"):
+            self.game_over = True
+            self.winner = None
+
+        elif self.is_stalemate("black"):
+            self.game_over = True
+            self.winner = None
+
         else:
             self.game_over = False
             self.winner = None
+
+    def is_stalemate(self, color):
+        """
+        A player is in stalemate if:
+        1. Their king is NOT in check.
+        2. They have NO legal moves.
+        """
+        return (
+            not self.is_in_check(color)
+            and not self.has_legal_moves(color)
+        )
 
     def promote_pawn_if_needed(self, row, col, promotion_choice):
         piece = self.board[row][col]
@@ -474,8 +493,18 @@ class ChessGame:
             self.board[end_row][end_col] = target
             return False, "You cannot leave your king in check."
 
+        # promotion is part of the successful move
+        self.promote_pawn_if_needed(end_row, end_col, promotion_choice)
+
+        # now the move is complete, switch turns
         self.turn = "black" if self.turn == "white" else "white"
 
-        self.promote_pawn_if_needed(end_row, end_col, promotion_choice)
+        self.update_game_over_and_winner()
+
+        if self.game_over:
+            if self.winner is None:
+                return True, "Stalemate! The game is a draw."
+
+            return True, f"Checkmate! {self.winner.capitalize()} wins."
 
         return True, "Move successful."

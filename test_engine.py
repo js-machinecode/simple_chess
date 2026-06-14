@@ -842,5 +842,93 @@ class TestChessGame(unittest.TestCase):
         self.assertTrue(success)
         self.assertEqual(self.game.board[7][1], "b")
 
+    #=====
+    #stalemate tests
+    #=====
+
+    def test_white_not_in_stalemate_at_start(self):
+        self.assertFalse(self.game.is_stalemate("white"))
+
+
+    def test_black_not_in_stalemate_at_start(self):
+        self.assertFalse(self.game.is_stalemate("black"))
+
+    def test_black_in_stalemate(self):
+        self.game.board = [
+            ["k", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", "Q", ".", ".", ".", ".", "."],
+            [".", "K", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+        ]
+
+        self.assertFalse(self.game.is_in_check("black"))
+        self.assertFalse(self.game.has_legal_moves("black"))
+        self.assertTrue(self.game.is_stalemate("black"))
+
+    def test_check_is_not_stalemate(self):
+        self.game.board = [
+            ["k", ".", ".", ".", ".", ".", ".", "."],
+            [".", "Q", ".", ".", ".", ".", ".", "."],
+            [".", ".", "K", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+        ]
+
+        self.assertTrue(self.game.is_in_check("black"))
+        self.assertFalse(self.game.is_stalemate("black"))
+
+    def test_not_stalemate_if_legal_move_exists(self):
+        self.game.board = [
+            ["k", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", "Q", ".", ".", ".", ".", "."],
+            [".", "K", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+        ]
+
+        self.assertFalse(self.game.is_stalemate("black"))
+
+    def test_checkmate_is_not_stalemate(self):
+        self.game.board = [
+            ["k", ".", ".", ".", ".", ".", ".", "."],
+            [".", "Q", ".", ".", ".", ".", ".", "."],
+            [".", ".", "K", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+        ]
+
+        self.assertTrue(self.game.is_checkmate("black"))
+        self.assertFalse(self.game.is_stalemate("black"))
+
+    def test_stalemate_sets_game_over(self):
+        self.game.board = [
+            ["k", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", "Q", ".", ".", ".", ".", "."],
+            [".", "K", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+        ]
+
+        self.game.update_game_over_and_winner()
+
+        self.assertTrue(self.game.game_over)
+        self.assertIsNone(self.game.winner)
+
 if __name__ == "__main__":
     unittest.main()
