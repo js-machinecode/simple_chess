@@ -684,5 +684,27 @@ class TestChessGame(unittest.TestCase):
         self.assertFalse(self.game.game_over)
         self.assertIsNone(self.game.winner)
 
+
+
+    #=====
+    # promotion tests
+    #======
+
+    def test_white_pawn_can_promote_to_knight(self):
+        self.game.board = [
+            [".", ".", ".", ".", ".", ".", "k", "."],
+            [".", ".", ".", ".", "P", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "K", ".", ".", "."],
+        ]
+
+        success, message = self.game.move_piece("e7", "e8", "n")
+
+        self.assertTrue(success)
+        self.assertEqual(self.game.board[0][4], "N")
 if __name__ == "__main__":
     unittest.main()

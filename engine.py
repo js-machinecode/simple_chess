@@ -396,7 +396,39 @@ class ChessGame:
             self.game_over = False
             self.winner = None
 
-    def move_piece(self, start, end):
+    def promote_pawn_if_needed(self, row, col, promotion_choice):
+        piece = self.board[row][col]
+
+        if piece not in ("P", "p"):
+            return
+        
+        if piece == "P" and row != 0:
+            return
+        
+        if piece == 'p' and row != 7:
+            return
+        
+        valid_choices = {
+            'q': 'Q',
+            'r': 'R',
+            'b': 'B',
+            'n': 'N',
+        }
+
+        choice = promotion_choice.lower()
+
+        if choice not in valid_choices:
+            choice = 'q'
+        
+        promoted_piece = valid_choices[choice]
+
+        if piece.islower():
+            promoted_piece = promoted_piece.lower()
+        
+        self.board[row][col] = promoted_piece
+
+
+    def move_piece(self, start, end, promotion_choice='q'):
         '''
         Attempt moving a piece from one square to another
 
@@ -443,5 +475,7 @@ class ChessGame:
             return False, "You cannot leave your king in check."
 
         self.turn = "black" if self.turn == "white" else "white"
+
+        self.promote_pawn_if_needed(end_row, end_col, promotion_choice)
 
         return True, "Move successful."
