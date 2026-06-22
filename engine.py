@@ -464,7 +464,9 @@ class ChessGame:
             (True, message) if successful
             (False, error_message) otherwise
         '''
-        
+        if self.game_over:
+            return False, "The game is already over."
+
         start_row, start_col = self.square_to_index(start)
         end_row, end_col = self.square_to_index(end)
 

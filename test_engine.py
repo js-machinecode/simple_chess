@@ -669,15 +669,18 @@ class TestChessGame(unittest.TestCase):
 
     def test_game_not_over_if_black_king_can_escape_check(self):
         self.game.board = [
-            ["k", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", "Q", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", "K", ".", ".", "."],
+            [".", ".", ".", ".", "k", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "Q", ".", ".", "."],
+            [".", ".", "K", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", "."],
         ]
+
+        self.assertTrue(self.game.is_in_check("black"))
+        self.assertTrue(self.game.has_legal_moves("black"))
 
         self.game.update_game_over_and_winner()
 
@@ -929,6 +932,15 @@ class TestChessGame(unittest.TestCase):
 
         self.assertTrue(self.game.game_over)
         self.assertIsNone(self.game.winner)
+
+    def test_cannot_move_after_game_over(self):
+        self.game.game_over = True
+        self.game.winner = "white"
+
+        success, message = self.game.move_piece("e2", "e4")
+
+        self.assertFalse(success)
+        self.assertEqual(message, "The game is already over.")
 
 if __name__ == "__main__":
     unittest.main()
