@@ -15,3 +15,6 @@ git_log.txt
 # OS files
 .DS_Store
 Thumbs.db
+
+# pygame setup_test_file
+gui_test.py
