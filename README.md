@@ -4,51 +4,6 @@ A two-player chess game written in Python featuring a custom-built chess engine 
 
 ---
 
-## Features
-
-- Legal move validation for all standard pieces
-- Check detection
-- Checkmate detection
-- Stalemate detection
-- Pawn promotion
-- Turn-based gameplay
-- Graphical interface using pygame-ce
-- Unit test suite for engine functionality
-
----
-
-## Technologies Used
-
-- Python 3
-- pygame-ce
-- unittest
-
----
-
-## Project Structure
-
-```text
-simple_chess/
-│
-├── assets/
-│   └── Piece images and game assets
-│
-├── engine.py
-│   └── Chess engine and game logic
-│
-├── gui.py
-│   └── Graphical user interface
-│
-├── main.py
-│   └── Program entry point
-│
-├── test_engine.py
-│   └── Unit tests
-│
-└── .gitignore
-
-
-
 Installation
 
 Clone the repository:
@@ -94,3 +49,52 @@ Undo functionality
 PGN export
 AI opponent
 Network multiplayer
+
+---
+
+## Features
+
+- Legal move validation for all standard pieces
+- Check detection
+- Checkmate detection
+- Stalemate detection
+- Pawn promotion
+- Turn-based gameplay
+- Graphical interface using pygame-ce
+- Unit test suite for engine functionality
+
+---
+
+## Technologies Used
+
+- Python 3
+- pygame-ce
+- unittest
+
+---
+
+## Project Structure
+
+```text
+simple_chess/
+│
+├── assets/
+│   └── Piece images and game assets
+│
+├── engine.py
+│   └── Chess engine and game logic
+│
+├── gui.py
+│   └── Graphical user interface
+│
+├── main.py
+│   └── Program entry point
+│
+├── test_engine.py
+│   └── Unit tests
+│
+└── .gitignore
+
+
+
+
